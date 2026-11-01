@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ASframe Create — Edición que conecta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#7c5dd4;--light:#a888f7;--dim:#3d2f7a;--bg:#0d0b18;--surface:#13112a;--surface2:#1c183a;
+  --border:rgba(124,93,212,.3);--text:#f0eeff;--muted:#9b90c2;--pink:#f3a6e8;
+  --lilac:#efe9ff;--ink:#1d1440;--ink2:#5b4f8a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:400 16px/1.65 'DM Sans',sans-serif;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+section{padding:96px 0}
+
+/* ===== TEXTO CURSIVO (Caveat) ===== */
+.hand{font-family:'Caveat',cursive;font-weight:700;color:var(--pink);font-size:36px;line-height:1}
+.wrap p.hand{font-size:36px;line-height:1;margin-bottom:0;color:var(--pink)}
+.light .wrap p.hand{color:var(--purple)}
+.light{background:var(--lilac);color:var(--ink)}
+.light .hand{color:var(--purple)}
+
+/* ===== TÍTULOS EN BEBAS NEUE ===== */
+h1,h2,h3,.st b,.results b,.bar{font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:.03em;line-height:1.08}
+
+/* NAV flotante */
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;width:min(920px,calc(100% - 24px));display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(19,17,42,.85);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:999px;padding:8px 8px 8px 24px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;text-decoration:none}
+.logo span{color:var(--light)}
+.links{display:flex;align-items:center;gap:22px}
+.links a{font-size:14px;color:var(--muted);text-decoration:none;font-weight:500}
+.links a:hover{color:var(--pink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--pink);color:var(--ink);padding:15px 28px;border-radius:999px;font:700 16px 'DM Sans',sans-serif;text-decoration:none;border:none;cursor:pointer;box-shadow:0 6px 0 #b678ad;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(3px);box-shadow:0 3px 0 #b678ad}
+.btn.sm{padding:10px 20px;font-size:14px;box-shadow:none}
+.btn.sm:hover{transform:none}
+.btn.dark{background:var(--purple);color:#fff;box-shadow:0 6px 0 var(--dim)}
+.btn.dark:hover{box-shadow:0 3px 0 var(--dim)}
+
+/* HERO (compacto) */
+.hero{padding:104px 0 36px;background:radial-gradient(circle at 85% 20%,rgba(124,93,212,.4),transparent 55%),var(--bg)}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(38px,4.8vw,60px);margin:10px 0 16px;line-height:1.2}
+.clip{display:inline-block;padding:0 12px;border-radius:12px;line-height:1.15;margin:2px 0}
+.c1{background:var(--purple);transform:rotate(-1.5deg)}
+.c2{background:var(--pink);color:var(--ink);transform:rotate(1deg)}
+.c3{background:var(--light);color:var(--ink);transform:rotate(-1deg)}
+.sub{color:#c9c1e6;font-size:17px;max-width:500px;margin-bottom:24px}
+.acts{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.link-u{font-weight:700;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--light)}
+
+/* ===== RECORTE EN CÍRCULO (efecto parche bordado) ===== */
+.stage{position:relative;height:400px;--d:340px}
+.disc{position:absolute;left:50%;top:50%;width:var(--d);height:var(--d);transform:translate(-50%,-50%);border-radius:50%;overflow:hidden;background:linear-gradient(160deg,var(--pink),var(--purple));box-shadow:0 0 0 6px #fff,0 0 0 9px var(--purple),0 24px 50px rgba(0,0,0,.5)}
+.disc::after{content:'';position:absolute;inset:14px;border-radius:50%;border:2px dashed rgba(255,255,255,.85);z-index:1;pointer-events:none}
+.cut{position:absolute;left:50%;bottom:-2%;transform:translateX(-50%);height:calc(var(--d) * 1.44);width:auto;max-width:none;z-index:2;filter:drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(0 6px 10px rgba(0,0,0,.3))}
+.rec{position:absolute;top:30px;left:10px;background:#ff4d6d;color:#fff;font-weight:700;font-size:12px;padding:4px 12px;border-radius:999px;z-index:6;display:flex;gap:6px;align-items:center}
+.rec::before{content:'';width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.st{position:absolute;background:#fff;color:var(--ink);border-radius:16px;padding:8px 14px;font-weight:700;font-size:13px;box-shadow:0 10px 24px rgba(0,0,0,.35);z-index:5;line-height:1.3}
+.st b{display:block;font-size:28px;color:var(--purple)}
+.s1{right:-24px;top:50%;left:auto;bottom:auto;transform:translateY(-50%) rotate(4deg)}
+.s2{right:-6px;top:40px;transform:rotate(5deg)}
+.s3{right:-10px;bottom:36px;transform:rotate(-3deg)}
+
+/* línea de tiempo decorativa */
+.ruler{position:relative;margin-top:36px;height:34px;border-top:2px solid var(--border);background:repeating-linear-gradient(90deg,var(--border) 0 2px,transparent 2px 28px) 0 0/100% 12px no-repeat;color:var(--muted);font:500 12px 'DM Sans'}
+.ruler span{position:absolute;top:16px}
+.play{position:absolute;top:-8px;left:0;width:2px;height:48px;background:var(--pink);animation:run 9s linear infinite}
+.play::before{content:'';position:absolute;top:0;left:-6px;border:7px solid transparent;border-top:10px solid var(--pink);border-bottom:0}
+@keyframes run{to{left:100%}}
+
+/* TITULOS DE SECCIÓN */
+.head{max-width:620px;margin-bottom:52px}
+.head h2{font-size:clamp(40px,5.5vw,64px);margin:6px 0 12px}
+.head p{color:var(--muted);font-size:17px}
+.light .head p{color:var(--ink2)}
+
+/* SERVICIOS */
+.tracks{display:grid;gap:18px}
+.track{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;border-radius:28px;padding:26px 30px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:transform .2s}
+.track:hover{transform:translate(-3px,-3px)}
+.track:nth-child(1){background:var(--light);margin-right:10%}
+.track:nth-child(2){background:var(--pink);margin-left:6%;margin-right:4%}
+.track:nth-child(3){background:#fff;margin-left:12%}
+.track .ico{font-size:34px;width:68px;height:68px;border-radius:22px;background:rgba(255,255,255,.55);display:grid;place-items:center}
+.track h3{font-size:32px;margin-bottom:4px;color:var(--ink)}
+.track p{color:#2c2058;font-size:15px;margin-bottom:12px;max-width:560px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--ink);color:#fff;border-radius:999px;padding:4px 14px;font-size:13px;font-weight:500}
+.center{margin-top:44px;display:flex;justify-content:center}
+
+/* PORTAFOLIO */
+.phones{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.item:nth-child(1) .frame{transform:rotate(-2.5deg)}
+.item:nth-child(3) .frame{transform:rotate(2.5deg)}
+.item:nth-child(2){margin-top:34px}
+.frame{aspect-ratio:9/16;border:9px solid #2b2152;border-radius:36px;overflow:hidden;background:#000;box-shadow:10px 10px 0 var(--dim);transition:transform .25s}
+.item:hover .frame{transform:rotate(0) scale(1.02)}
+.frame iframe{width:100%;height:100%;border:0;display:block}
+.frame video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.info{padding:20px 6px 0}
+.client{font-family:'Caveat',cursive;font-size:32px;color:var(--pink);font-weight:700;line-height:1}
+.info h3{font-size:30px;margin:2px 0 6px}
+.info p{color:var(--muted);font-size:14px;margin-bottom:12px}
+.info .chip{background:var(--surface2);border:1px solid var(--border);color:#cfc7ee}
+.results{margin-top:80px;background:var(--pink);color:var(--ink);border-radius:36px;padding:44px 32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;text-align:center;transform:rotate(-1deg)}
+.results b{display:block;font-size:clamp(46px,6vw,72px);line-height:1}
+.results span{font-size:15px;font-weight:500}
+
+/* SOBRE MI */
+.about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:center}
+.polaroid{background:#fff;padding:16px 16px 56px;border-radius:8px;box-shadow:0 20px 40px rgba(61,47,122,.25);transform:rotate(-4deg);position:relative;max-width:360px}
+.polaroid::before{content:'';position:absolute;top:-16px;left:50%;width:110px;height:32px;transform:translateX(-50%) rotate(3deg);background:rgba(243,166,232,.8)}
+.polaroid .pic{aspect-ratio:4/5;background:linear-gradient(160deg,#d9ccff,#bfa8ff);position:relative;display:grid;place-items:center;text-align:center;color:var(--ink2);font-size:14px;overflow:hidden}
+.polaroid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.polaroid .cap{position:absolute;bottom:12px;left:0;right:0;text-align:center;font:700 38px 'Caveat',cursive;line-height:1;color:var(--ink)}
+.about h2{font-size:clamp(40px,5.5vw,64px);margin:6px 0 18px}
+.about p{color:var(--ink2);font-size:17px;margin-bottom:14px}
+.stickers{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 30px}
+.sticker{background:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 16px;font-weight:700;font-size:14px;box-shadow:3px 3px 0 var(--ink)}
+.sticker:nth-child(2){transform:rotate(-2deg)}
+.sticker:nth-child(3){transform:rotate(2deg)}
+
+/* PRUEBA SOCIAL */
+.chat{max-width:720px;margin:0 auto;display:grid;gap:22px}
+.msg{display:flex;gap:14px;align-items:flex-end}
+.msg:nth-child(even){flex-direction:row-reverse}
+.av{width:80px;height:80px;min-width:80px;border-radius:50%;background:var(--purple);display:grid;place-items:center;font-weight:700;font-size:28px;overflow:hidden;position:relative;border:3px solid var(--pink)}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.bubble{background:var(--surface2);border:1px solid var(--border);border-radius:24px 24px 24px 6px;padding:18px 22px;position:relative;max-width:560px}
+.msg:nth-child(even) .bubble{background:var(--purple);border-color:var(--purple);border-radius:24px 24px 6px 24px}
+.bubble p{font-size:16px}
+.bubble small{display:block;margin-top:8px;color:var(--muted);font-weight:700;font-size:13px}
+.msg:nth-child(even) .bubble small{color:#e3d9ff}
+.react{position:absolute;bottom:-14px;right:16px;background:#fff;border-radius:999px;padding:2px 9px;font-size:15px;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.logos{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:56px}
+.logos span{border:2px dashed var(--border);border-radius:999px;padding:8px 22px;color:var(--muted);font-weight:500}
+
+/* PRODUCTO DIGITAL */
+.product-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:center}
+.cover{position:relative;max-width:340px;margin:0 auto;width:100%}
+.cover img{width:100%;display:block;border-radius:24px;border:3px solid var(--ink);box-shadow:10px 10px 0 var(--purple);transform:rotate(-3deg);transition:transform .25s}
+.cover:hover img{transform:rotate(0)}
+.price-tag{position:absolute;right:-18px;bottom:30px;background:var(--pink);color:var(--ink);border:2px solid var(--ink);border-radius:18px;padding:6px 18px;transform:rotate(5deg);box-shadow:4px 4px 0 var(--ink);text-align:center;line-height:1.1}
+.price-tag small{display:block;font-size:12px;font-weight:700}
+.price-tag b{display:block;font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:40px;letter-spacing:.03em}
+.product h2{font-size:clamp(40px,5.5vw,64px);margin:6px 0 14px}
+.product p{color:var(--ink2);font-size:17px;margin-bottom:14px}
+.buy{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:8px}
+.buy-price{font-family:'Bebas Neue',sans-serif;font-size:56px;line-height:1;letter-spacing:.03em;color:var(--ink)}
+.buy-price small{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--ink2);letter-spacing:0;margin-left:4px}
+
+/* CONTACTO */
+.contact{background:linear-gradient(140deg,var(--purple),var(--dim))}
+.contact-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:52px;align-items:start}
+.contact h2{font-size:clamp(42px,6vw,68px);margin:6px 0 16px}
+.contact-copy>p{color:#e3d9ff;font-size:18px;margin-bottom:26px}
+.gift{background:rgba(255,255,255,.14);border:2px dashed rgba(255,255,255,.5);border-radius:22px;padding:16px 20px;margin-bottom:26px;font-size:15px}
+.gift strong{color:var(--pink)}
+.round{display:flex;gap:12px;flex-wrap:wrap}
+.round a{background:#fff;color:var(--ink);border-radius:999px;padding:12px 20px;font-weight:700;text-decoration:none;font-size:15px;transition:transform .2s}
+.round a:hover{transform:translateY(-4px) rotate(-2deg)}
+form{background:var(--bg);border:2px solid var(--pink);border-radius:32px;padding:32px;display:grid;gap:16px;box-shadow:10px 10px 0 var(--pink)}
+.bar{display:flex;align-items:center;gap:8px;font-size:18px;color:var(--pink)}
+.bar i{width:10px;height:10px;border-radius:50%;background:#ff4d6d}.bar i:nth-child(2){background:#ffd166}.bar i:nth-child(3){background:#6be3a4}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:6px}
+.field label{font-size:14px;font-weight:500;color:#cfc7ee}
+.field input,.field select{background:var(--surface2);border:2px solid transparent;border-radius:16px;padding:14px 16px;color:var(--text);font:400 15px 'DM Sans';outline:none;width:100%;appearance:none;-webkit-appearance:none;transition:border-color .2s}
+.field input::placeholder{color:#6d62a0}
+.field input:focus,.field select:focus{border-color:var(--light)}
+.field select option{background:#1c183a}
+.sel{position:relative}.sel::after{content:'▾';position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#6d62a0;pointer-events:none}
+form .btn{width:100%}
+.privacy{font-size:13px;color:var(--muted);text-align:center}
+.ok{display:none;text-align:center;padding:30px 0}
+.ok .big{font-size:56px}.ok h3{font-size:34px;margin:6px 0}.ok p{color:var(--muted)}
+
+footer{padding:30px 0;border-top:1px solid var(--border)}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:14px;color:var(--muted)}
+.foot nav{display:flex;gap:20px}.foot nav a{text-decoration:none}.foot nav a:hover{color:var(--pink)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+@media (max-width:860px){
+  section{padding:72px 0}
+  .wrap p.hand{font-size:30px}
+  .hero{padding:92px 0 28px}
+  .hero-grid,.about-grid,.contact-grid,.product-grid{grid-template-columns:1fr}
+  .product-grid{gap:48px}
+  .stage{max-width:420px;margin:0 auto;width:100%;height:360px;--d:290px}
+  .links a:not(.btn){display:none}
+  .phones{grid-template-columns:1fr;max-width:340px;margin:0 auto}
+  .item:nth-child(2){margin-top:0}
+  .track{margin:0!important;grid-template-columns:1fr}
+  .polaroid{margin:0 auto}
+}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="logo" href="#inicio">AS<span>frame</span> Create</a>
+  <div class="links">
+    <a href="#servicios">Servicios</a><a href="#portafolio">Portafolio</a><a href="#sobre-mi">Sobre mí</a><a href="#opiniones">Opiniones</a>
+    <a class="btn sm" href="#contacto">Hablemos</a>
+  </div>
+</header>
+
+<main>
+
+<!-- 1. PROMESA + CTA -->
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="hand">hola, soy Aleja 👋</p>
+        <h1>Ayudo a marcas y creadores a lograr <span class="clip c1">contenido que conecta</span> mediante <span class="clip c2">estrategia y edición creativa</span></h1>
+        <p class="sub">Tú creas, yo me encargo de la estrategia y edición con la esencia de tu marca, a tiempo y sin que expliques todo dos veces.</p>
+        <div class="acts">
+          <a class="btn" href="#contacto">Agenda tu consulta gratis</a>
+          <a class="link-u" href="#portafolio">Mira mi trabajo</a>
+        </div>
+      </div>
+      <div class="stage">
+        <span class="rec">REC</span>
+        <div class="disc">
+          <img class="cut" src="/imagenes/IMG_3841-removebg-preview.png" alt="Alejandra, editora de video" />
+        </div>
+        <div class="st s2"><b>+50</b>videos editados</div>
+        <div class="st s1"><b>+5</b>marcas felices</div>
+        <div class="st s3"><b>20,7K</b>vistas generadas</div>
+      </div>
+    </div>
+    <div class="ruler" aria-hidden="true"><span style="left:0">00:00</span><span style="left:33%">00:10</span><span style="left:66%">00:20</span><span style="right:0">00:30</span><div class="play"></div></div>
+  </div>
+</section>
+
+<!-- 2. SERVICIOS -->
+<section class="light" id="servicios">
+  <div class="wrap">
+    <div class="head">
+      <p class="hand">lo que puedo hacer por ti</p>
+      <h2>Tu contenido, listo para publicar</h2>
+      <p>Creo, edito y gestiono contenido con intención.</p>
+    </div>
+    <div class="tracks">
+      <article class="track"><div class="ico">🎬</div><div><h3>Edición de videos</h3><p>Montaje, subtítulos, efectos, musicalización, corrección de color y elementos gráficos para crear videos que comuniquen y conecten con tu audiencia.</p><div class="chips"><span class="chip">Mayor retención</span><span class="chip">Comunicación efectiva</span><span class="chip">Ahorro de tiempo</span></div></div></article>
+      <article class="track"><div class="ico">📱</div><div><h3>Community manager</h3><p>Gestión de redes sociales, programación, publicación, interacción y seguimiento.</p><div class="chips"><span class="chip">Presencia constante</span><span class="chip">Conexión con tu audiencia</span><span class="chip">Gestión estratégica</span></div></div></article>
+      <article class="track"><div class="ico">🎨</div><div><h3>Estrategia de contenido</h3><p>Planeación de pilares, objetivos, formatos, ideas y enfoques de comunicación.</p><div class="chips"><span class="chip">Claridad en la comunicación</span><span class="chip">Contenido con propósito</span><span class="chip">Organización y planificación</span></div></div></article>
+    </div>
+    <div class="center"><a class="btn dark" href="#contacto">Quiero cotizar</a></div>
+  </div>
+</section>
+
+<!-- 3. PORTAFOLIO + RESULTADOS -->
+<section id="portafolio">
+  <div class="wrap">
+    <div class="head">
+      <p class="hand">proyectos reales</p>
+      <h2>Videos que ya están conectando</h2>
+    </div>
+    <div class="phones">
+      <article class="item">
+        
+        <div class="frame"><iframe src="https://www.youtube.com/embed/ayDsVbFo900?si=_D0B1lQ2F0aZVdEE" title="Marca personal" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <div class="info"><p class="client">Sofi Mentora</p><h3>Marca personal</h3><p>Contenido diario, comunicar un mensaje enganchando a la audiencia de inicio a fin</p><div class="chips"><span class="chip">Edición completa</span><span class="chip">Reel</span></div></div>
+      </article>
+      <article class="item">
+        <div class="frame"><iframe src="https://www.youtube.com/embed/0lU68HUhC2I" title="Reel de venta" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <div class="info"><p class="client">103 Jeans</p><h3>Reel de venta</h3><p>Dar a conocer marca de jeans + paso a paso para comprarles</p><div class="chips"><span class="chip">Edición completa</span><span class="chip">Reel</span></div></div>
+      </article>
+      <article class="item">
+        <div class="frame"><iframe src="https://www.youtube.com/embed/6_NA9dPe46Q?si=R6UGuDKoTCOnuYnu"title="Clip entrevista" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <div class="info"><p class="client">Creador de contenido</p><h3>Clip entrevista</h3><p>Compartir partes interesates de entrevistas largas en clips </p><div class="chips"><span class="chip">Edición completa</span><span class="chip">Reel</span></div></div>
+      </article>
+    </div>
+    <div class="center"><a class="link-u" href="https://www.instagram.com/asframe_create" target="_blank" rel="noopener">Ver más proyectos en Instagram</a></div>
+   
+  </div>
+</section>
+
+<!-- 4. QUIÉN SOY -->
+<section class="light about" id="sobre-mi">
+  <div class="wrap about-grid">
+    <div class="polaroid">
+      <div class="pic"><img src="/imagenes/Retrato elegante de mujer en sticker.png" alt="Alejandra Martínez Sierra" onerror="this.remove()" /><span>📸 Tu foto aquí</span></div>
+      <span class="cap">Aleja</span>
+    </div>
+    <div>
+      <p class="hand">un gusto conocerte</p>
+      <h2>Soy Alejandra, la editora detrás de ASframe</h2>
+      <p>Soy una apasionada por la creatividad, la comunicación y el mundo digital. Desde niña me encantaba hacerle edits a famosos 🤭 y con el tiempo descubrí en la edición de video una forma de transformar ideas en historias que conectan. Me encanta explorar nuevas formas de comunicar, aprender constantemente y encontrar el valor que hay detrás de cada proyecto.</p>
+      <p>ASFRAME CREATE nació de mi interés por ayudar a marcas, emprendedores y creadores de contenido a comunicar sus ideas de una manera más estratégica y creativa, permitiendo que las marcas crezcan sin tener que hacerlo todo por sí solas.</p>
+      <div class="stickers"><span class="sticker">💜 Creatividad</span><span class="sticker">⚡ Compromiso</span><span class="sticker">🎯 Autenticidad</span></div>
+      <a class="btn dark" href="#contacto">Trabajemos juntas</a>
+    </div>
+  </div>
+</section>
+
+<!-- 5. PRUEBA SOCIAL -->
+<section id="opiniones">
+  <div class="wrap">
+    <div class="head" style="margin-inline:auto;text-align:center">
+      <p class="hand">mensajes que me alegran el día</p>
+      <h2>Lo que dicen quienes ya trabajaron conmigo</h2>
+    </div>
+    <div class="chat">
+      <div class="msg"><div class="av">A<img src="/imagenes/Jhonny.png" alt="" onerror="this.remove()" /></div><div class="bubble"><p>Queria mostrar en un video toda una noche como dj y logro comunicar demásiado bien lo que queria en tan solo un video</p><small>Jhonny ·  Diseñador y dj</small><span class="react">🔥</span></div></div>
+      <div class="msg"><div class="av">B<img src="/imagenes/SOM.png" alt="" onerror="this.remove()" /></div><div class="bubble"><p>Me ayudo un monton a ahorrar tiempo como creadora de contenido con muy buena asesoria y videos editados demasiado increíbles</p><small>Sofi ·  Creadora de contenido </small><span class="react">💜</span></div></div>
+      <div class="msg"><div class="av">C<img src="/imagenes/103jeans.png" alt="" onerror="this.remove()" /></div><div class="bubble"><p>Nos ayuda coomo community manager y su trabajo y dedicación es excelente</p><small>103 jeans · Marca de jeans</small><span class="react">🙌</span></div></div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- 5.5 PRODUCTO DIGITAL -->
+<section class="light product" id="producto">
+  <div class="wrap product-grid">
+    <div class="cover">
+      <img src="/imagenes/crea-kit-portada.jpg" alt="Portada de CREA KIT, el producto digital de ASframe Create" />
+      <div class="price-tag"><small>precio de lanzamiento</small><b>$30.000</b></div>
+    </div>
+    <div>
+      <p class="hand">Mi producto digital</p>
+      <h2>CREA KIT: todo lo que necesitas para crear, en un solo lugar</h2>
+      <p>Reúne los recursos para hacer tu proceso de creación y edición más práctico, ágil y organizado. Todo está ordenado en módulos para que encuentres lo que buscas en segundos y dediques tu tiempo a crear.</p>
+      <div class="stickers">
+        <span class="sticker">🔊 Efectos de sonido</span>
+        <span class="sticker">🧩 Plantillas</span>
+        <span class="sticker">✨ Transiciones</span>
+        <span class="sticker">🎞️ Overlays</span>
+        <span class="sticker">🖼️ Fondos</span>
+        <span class="sticker">🔗 Páginas gratuitas y más</span>
+      </div>
+      <div class="buy">
+        <div class="buy-price">$30.000<small>COP</small></div>
+        <a class="btn dark" href="https://wa.me/573147145720?text=Quiero%20el%20producto%20digital" target="_blank" rel="noopener">Quiero el producto digital</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. CONTACTO -->
+<section class="contact" id="contacto">
+  <div class="wrap contact-grid">
+    <div class="contact-copy">
+      <p class="hand" style="color:#fff">¿empezamos?</p>
+      <h2>Agenda tu consulta gratuita</h2>
+      <p>Cuéntame sobre tu proyecto y te digo cómo hacer crecer tu marca.</p>
+      <div class="gift">🎁 Al agendar recibes <strong>una asesoría de estética visual sin costo</strong>: reviso tu feed y te doy recomendaciones concretas.</div>
+      <div class="round">
+        <a href="https://wa.me/573147145720" target="_blank" rel="noopener">💬 WhatsApp</a>
+        <a href="https://www.instagram.com/asframe_create" target="_blank" rel="noopener">📷 Instagram</a>
+        <a href="https://www.tiktok.com/@aframecreate" target="_blank" rel="noopener">🎵 TikTok</a>
+      </div>
+    </div>
+    <div>
+      <form id="leadForm">
+        <div class="bar"><i></i><i></i><i></i>&nbsp;Quisiera que me cuentes acerca de tu marca</div>
+        <div class="row">
+          <div class="field"><label for="nombre">Nombre</label><input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required /></div>
+          <div class="field"><label for="red">User de instagram</label><input type="text" id="red" name="red" placeholder="@tuusuario" required /></div>
+        </div>
+        <div class="field"><label for="email">Correo electrónico</label><input type="email" id="email" name="email" placeholder="tu@correo.com" required /></div>
+        <div class="field"><label for="tipo">¿Qué necestita ahora mismo tu marca?</label>
+          <div class="sel"><select id="tipo" name="tipo" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option>Edición de videos  </option><option> Manejo de comunidad </option><option>Estrategia de contenido</option><option>Otro</option>
+          </select></div>
+        </div>
+        <button type="submit" class="btn">Quiero que conozcan mi proyecto</button>
+        <p class="privacy">🔒 Tu información es confidencial. Sin spam, nunca.</p>
+      </form>
+      <div class="ok" id="successMsg"><div class="big">🎉</div><h3>¡Proyecto exportado!</h3><p>Recibí tu info y te escribo muy pronto.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#inicio">AS<span>frame</span> Create</a>
+    <nav><a href="https://www.instagram.com/asframe_create" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@aframecreate" target="_blank" rel="noopener">TikTok</a><a href="https://wa.me/573147145720" target="_blank" rel="noopener">WhatsApp</a></nav>
+    <span>© 2026 ASframe Create</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('leadForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  });
+</script>
+</body>
+</html>
