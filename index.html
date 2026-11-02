@@ -32,37 +32,11 @@ section{padding:96px 0}
 h1,h2,h3,.st b,.results b,.bar{font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:.03em;line-height:1.08}
 
 /* NAV flotante */
-.nav{position:fixed;
-  top:10px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:50;
-  width: min(920px, calc(100% - 20px)); /* <-- Aquí corregimos el cálculo del ancho */
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 8px; /* Reducimos el espacio general */
-  background:rgba(19,17,42,.85);
-  backdrop-filter:blur(14px);
-  border:1px solid var(--border);
-  border-radius:999px;
-  padding: 6px 10px 6px 16px;}
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;width:min(920px,calc(100% - 24px));display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(19,17,42,.85);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:999px;padding:8px 8px 8px 24px}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;text-decoration:none}
 .logo span{color:var(--light)}
-.links{
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Reducimos el espacio entre cada palabra para que entren todas */
-}
-
-.links a{
-  font-size: 12px; /* Letra un poco más compacta para que quepan en una sola línea */
-  color: var(--muted);
-  text-decoration: none;
-  font-weight: 500;
-  white-space: nowrap; /* Evita que las palabras se corten hacia abajo */
-}
-
+.links{display:flex;align-items:center;gap:22px}
+.links a{font-size:14px;color:var(--muted);text-decoration:none;font-weight:500}
 .links a:hover{color:var(--pink)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--pink);color:var(--ink);padding:15px 28px;border-radius:999px;font:700 16px 'DM Sans',sans-serif;text-decoration:none;border:none;cursor:pointer;box-shadow:0 6px 0 #b678ad;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translateY(3px);box-shadow:0 3px 0 #b678ad}
@@ -217,13 +191,18 @@ footer{padding:30px 0;border-top:1px solid var(--border)}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 @media (max-width:860px){
-  /* Ajustes para que quepan todos los enlaces en celular */
-  .nav {
-    top: 8px;
-    width: calc(100% - 16px);
-    padding: 6px 6px 6px 12px;
-    gap: 6px;
-  }}
+  section{padding:72px 0}
+  .wrap p.hand{font-size:30px}
+  .hero{padding:92px 0 28px}
+  .hero-grid,.about-grid,.contact-grid,.product-grid{grid-template-columns:1fr}
+  .product-grid{gap:48px}
+  .stage{max-width:420px;margin:0 auto;width:100%;height:360px;--d:290px}
+  .links a:not(.btn){display:none}
+  .phones{grid-template-columns:1fr;max-width:340px;margin:0 auto}
+  .item:nth-child(2){margin-top:0}
+  .track{margin:0!important;grid-template-columns:1fr}
+  .polaroid{margin:0 auto}
+}
 @media (max-width:520px){.row{grid-template-columns:1fr}}
 </style>
 </head>
